@@ -5,6 +5,35 @@ class Usuario:
     nombre: str
     documento: str
 
+@dataclass
+class Reserva:
+    documento: str
+    nombre_usuario: str
+    horario: str
+    activa: bool = True
+
+    def cancelar(self) -> str:
+            """Marca la reserva como cancelada."""
+            if not self.activa:
+                return f"La reserva de {self.nombre_usuario} ya estaba cancelada."
+            self.activa = False
+            return f"Reserva de {self.nombre_usuario} a las {self.horario} cancelada."
+    
+    def confirmar(self) -> str:
+            """Se reactiva una reserva previamente cancelada."""
+            if self.activa:
+                return f"La reserva de {self.nombre_usuario} ya está activa."
+            self.activa = True
+            return f"Reserva de {self.nombre_usuario} confirmada nuevamente para las {self.horario}."
+
+    def coincide_con(self, documento: str) -> bool:
+        """Verificamos si esta reserva pertenece a un documento dado."""
+        return self.documento == documento
+
+    def mostrar_resumen(self) -> str:
+        """Se devuelve un texto legible con los datos de la reserva."""
+        estado = "activa" if self.activa else "cancelada"
+        return f"Reserva ({estado}) — {self.nombre_usuario} ({self.documento}) a las {self.horario}"
 
 class Gym:
     def __init__(self, nombre: str, tiempo_maximo: str = "1:30 horas") -> None:
